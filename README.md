@@ -65,3 +65,4 @@ $ anvil --help
 $ cast --help
 ```
 "# Merkat-Contracts" 
+"# Meerkat-contracts" 
