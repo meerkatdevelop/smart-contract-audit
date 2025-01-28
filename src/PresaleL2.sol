@@ -26,9 +26,11 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   uint256 public currentPhase;
   uint256[][3] public phases;
   uint256 public usdRaised;
-
+  uint256 public totalUsers;
+  
   mapping(address => bool) public isBlacklisted;
   mapping(address => uint256) public userTokenBalance;
+  mapping(address => bool) public hasBought;
 
   struct PhaseData {
     uint256 currentPhase;
@@ -126,6 +128,11 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     require(amount_ > 0, 'Amount can not be zero');
     require(paymentToken_ == usdtAddress || paymentToken_ == usdcAddress, "Token not supported");
     
+    if (!hasBought[msg.sender]) {
+      totalUsers++;
+      hasBought[msg.sender] = true;
+    }
+
     checkIfEnoughTokens(amount_);
     uint256 tokenAmountToReceive;
     if (ERC20(paymentToken_).decimals() == 18) tokenAmountToReceive = amount_ * 1e6 / phases[currentPhase][1];
@@ -151,6 +158,11 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     require(!isBlacklisted[msg.sender], 'This Address is Blacklisted');
     require(msg.value > 0, 'Amount can not be zero');
 
+    if (!hasBought[msg.sender]) {
+      totalUsers++;
+      hasBought[msg.sender] = true;
+    }
+    
     uint256 usdAmount = msg.value * getLatestPrice() / 1e18; 
     checkIfEnoughTokens(usdAmount);
     uint256 tokenAmountToReceive = usdAmount * 1e6 / phases[currentPhase][1]; 
@@ -175,6 +187,12 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
    * @param amount_ amount of assigned tokens
    */
   function increaseUserBalance(address user_, uint256 amount_) external onlyOwner {
+
+    if (!hasBought[msg.sender]) {
+      totalUsers++;
+      hasBought[msg.sender] = true;
+    }
+
     uint256 usdAmount = amount_ * phases[currentPhase][1] / 1e6;
     _checkAndUpdateCurrentPhase(amount_);
     usdRaised += usdAmount;
