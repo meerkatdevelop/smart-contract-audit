@@ -313,6 +313,14 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   }
 
   /**
+   * @dev To update the current phase
+   * @param newCurrentPhase_ new phase
+   */
+  function setCurrentPhase(uint256 newCurrentPhase_) external onlyOwner {
+    currentPhase = newCurrentPhase_;
+  }
+
+  /**
    * @dev To pause the presale
    */
   function pausePresale() public onlyOwner {
