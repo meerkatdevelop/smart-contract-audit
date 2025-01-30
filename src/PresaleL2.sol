@@ -119,7 +119,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     checkIfEnoughTokens(amount_);
     uint256 tokenAmountToReceive;
     if (ERC20(paymentToken_).decimals() == 18) tokenAmountToReceive = amount_ * 1e6 / phases[currentPhase][1];
-    else tokenAmountToReceive = amount_ * 10^(18 -ERC20(paymentToken_).decimals()) * 1e6 / phases[currentPhase][1];
+    else tokenAmountToReceive = amount_ * 10**(18 -ERC20(paymentToken_).decimals()) * 1e6 / phases[currentPhase][1];
     _checkAndUpdateCurrentPhase(tokenAmountToReceive);
 
     usdRaised += amount_;
@@ -224,7 +224,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
    */
   function getTokensFromUSDT(uint256 usdtAmount_) public view returns (uint256 tokensAmount) {
     if (ERC20(usdtAddress).decimals() == 18) tokensAmount = usdtAmount_ * 1e6 / phases[currentPhase][1];
-    else tokensAmount = usdtAmount_ * 10^(18 -ERC20(usdtAddress).decimals()) * 1e6 / phases[currentPhase][1];
+    else tokensAmount = usdtAmount_ * 10**(18 -ERC20(usdtAddress).decimals()) * 1e6 / phases[currentPhase][1];
   }
 
   /**
@@ -233,7 +233,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
    */
   function getTokensFromUSDC(uint256 usdcAmount_) public view returns (uint256 tokensAmount) {
     if (ERC20(usdcAddress).decimals() == 18) tokensAmount = usdcAmount_ * 1e6 / phases[currentPhase][1];
-    else tokensAmount = usdcAmount_ * 10^(18 -ERC20(usdcAddress).decimals()) * 1e6 / phases[currentPhase][1];
+    else tokensAmount = usdcAmount_ * 10**(18 -ERC20(usdcAddress).decimals()) * 1e6 / phases[currentPhase][1];
   }
 
   /**
