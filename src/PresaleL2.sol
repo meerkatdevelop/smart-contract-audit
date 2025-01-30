@@ -43,11 +43,6 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   event TokensBought(address indexed user, uint256 indexed tokensBought, uint256 usdRaised, uint256 timestamp);
   event NewPhase(uint256 indexed phase, uint256 phaseMaxTokens, uint256 phasePrice, uint256 phaseEndTime);
 
-  modifier checkSaleState() {
-    require(block.timestamp >= startTime && block.timestamp <= endTime, 'Invalid time for buying');
-    _;
-  }
-
   /**
    * @dev To start the presale
    * @param paymentWallet_ Payment wallet address
@@ -77,6 +72,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     maxTotalSellingAmount = maxTotalSellingAmount_;
     usdLimitPhase0 = usdLimitPhase0_;
     usdLimitPhase1 = usdLimitPhase1_;
+    pausePresale();
   }
 
   function checkIfEnoughTokens(uint256 usdAmount) internal view {
@@ -123,7 +119,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
    * @dev To buy into a presale using USDT
    * @param amount_ Number of tokens to pay
    */
-  function buyWithStable(address paymentToken_, uint256 amount_) external checkSaleState whenNotPaused nonReentrant {
+  function buyWithStable(address paymentToken_, uint256 amount_) external whenNotPaused nonReentrant {
     require(!isBlacklisted[msg.sender], 'This Address is Blacklisted');
     require(amount_ > 0, 'Amount can not be zero');
     require(paymentToken_ == usdtAddress || paymentToken_ == usdcAddress, "Token not supported");
@@ -154,7 +150,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   /**
    * @dev To buy into a presale using ETH
    */
-  function buyWithETH() external payable checkSaleState whenNotPaused nonReentrant {
+  function buyWithETH() external payable whenNotPaused nonReentrant {
     require(!isBlacklisted[msg.sender], 'This Address is Blacklisted');
     require(msg.value > 0, 'Amount can not be zero');
 
@@ -220,32 +216,6 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     require(user_ != address(0), 'Invalid address');
 
     isBlacklisted[user_] = false;
-  }
-
-  /**
-   * @dev To update the sale times
-   * @param startTime_ New start time
-   * @param endTime_ New end time
-   */
-  function changeSaleTimes(uint256 startTime_, uint256 endTime_) external onlyOwner {
-    require(startTime_ > 0 || endTime_ > 0, 'Invalid parameters');
-
-    if (startTime_ > 0) {
-      require(block.timestamp < startTime, 'Sale already started');
-      require(block.timestamp < startTime_, 'Sale time in past');
-
-      uint256 prevValue = startTime;
-      startTime = startTime_;
-      emit SaleTimeUpdated(bytes32('START'), prevValue, startTime_, block.timestamp);
-    }
-
-    if (endTime_ > 0) {
-      require(endTime_ > startTime, 'Invalid endTime');
-
-      uint256 prevValue = endTime;
-      endTime = endTime_;
-      emit SaleTimeUpdated(bytes32('END'), prevValue, endTime_, block.timestamp);
-    }
   }
 
   function checkPhaseLeftTokens(uint256 phase) public view returns(uint256 tokensLeft) {
@@ -358,14 +328,14 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   /**
    * @dev To pause the presale
    */
-  function pause() external onlyOwner {
+  function pausePresale() public onlyOwner {
     _pause();
   }
 
   /**
    * @dev To unpause the presale
    */
-  function unpause() external onlyOwner {
+  function unpausePresale() public onlyOwner {
     _unpause();
   }
 
