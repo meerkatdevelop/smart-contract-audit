@@ -59,7 +59,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     maxTotalSellingAmount = maxTotalSellingAmount_;
     usdLimitPhase0 = usdLimitPhase0_;
     usdLimitPhase1 = usdLimitPhase1_;
-    pausePresale();
+    _pause();
   }
 
   function checkIfEnoughTokens(uint256 usdAmount) internal view {
