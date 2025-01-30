@@ -16,8 +16,6 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   address public usdcAddress;
   IAggregator public aggregatorContract;
   address public paymentWallet;
-  uint256 public startTime;
-  uint256 public endTime;
   uint256 public maxTotalSellingAmount;
   uint256 public totalTokensSold;
   uint256 usdLimitPhase0;
@@ -43,20 +41,11 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   event TokensBought(address indexed user, uint256 indexed tokensBought, uint256 usdRaised, uint256 timestamp);
   event NewPhase(uint256 indexed phase, uint256 phaseMaxTokens, uint256 phasePrice, uint256 phaseEndTime);
 
-  /**
-   * @dev To start the presale
-   * @param paymentWallet_ Payment wallet address
-   * @param startTime_ Start time
-   * @param endTime_ End time
-   * @param maxTotalSellingAmount_ Max tokens to buy
-   */
   constructor(
     address usdtAddress_,
     address usdcAddress_,
     address aggregatorContract_,
     address paymentWallet_,
-    uint256 startTime_,
-    uint256 endTime_,
     uint256[][3] memory phases_,
     uint256 maxTotalSellingAmount_,
     uint256 usdLimitPhase0_,
@@ -66,8 +55,6 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     usdcAddress = usdcAddress_;
     aggregatorContract = IAggregator(aggregatorContract_);
     paymentWallet = paymentWallet_;
-    startTime = startTime_;
-    endTime = endTime_;
     phases = phases_;
     maxTotalSellingAmount = maxTotalSellingAmount_;
     usdLimitPhase0 = usdLimitPhase0_;
