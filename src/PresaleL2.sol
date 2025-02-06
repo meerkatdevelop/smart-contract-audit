@@ -165,15 +165,15 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   }
 
    /**
-   * @dev To blacklist a user
+   * @dev To set certain token amount for an address
    * @param user_ User address
    * @param amount_ amount of assigned tokens
    */
   function increaseUserBalance(address user_, uint256 amount_) external onlyOwner {
 
-    if (!hasBought[msg.sender]) {
+    if (!hasBought[user_]) {
       totalUsers++;
-      hasBought[msg.sender] = true;
+      hasBought[user_] = true;
     }
 
     uint256 usdAmount = amount_ * phases[currentPhase][1] / 1e6;
