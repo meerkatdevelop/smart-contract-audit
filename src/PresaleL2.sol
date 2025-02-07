@@ -122,7 +122,9 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     else tokenAmountToReceive = amount_ * 10**(18 -ERC20(paymentToken_).decimals()) * 1e6 / phases[currentPhase][1];
     _checkAndUpdateCurrentPhase(tokenAmountToReceive);
 
-    usdRaised += amount_;
+    if (ERC20(paymentToken_).decimals() == 18) usdRaised += amount_;
+    else usdRaised += amount_ * 10**(18 -ERC20(paymentToken_).decimals());
+    
     totalTokensSold += tokenAmountToReceive;
 
     require(totalTokensSold <= maxTotalSellingAmount, "Sold out");
@@ -176,9 +178,10 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
       hasBought[user_] = true;
     }
 
-    uint256 usdAmount = amount_ * phases[currentPhase][1] / 1e6;
+    uint256 usdAmount = amount_ * phases[currentPhase][1] / 1e6; 
+    checkIfEnoughTokens(usdAmount);
     _checkAndUpdateCurrentPhase(amount_);
-    usdRaised += usdAmount;
+    usdRaised += usdAmount; 
     totalTokensSold += amount_;
     userTokenBalance[user_] += amount_;
 
