@@ -145,9 +145,10 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         else tokenAmountToReceive = amount_ * 10**(18 - ERC20(paymentToken_).decimals()) * 1e6 / phases[currentPhase][1];
 
         _checkAndUpdateCurrentPhase(tokenAmountToReceive); 
-        usdRaised += amount_;
+        if (ERC20(paymentToken_).decimals() == 18) usdRaised += amount_;
+        else usdRaised += amount_ * 10**(18 -ERC20(paymentToken_).decimals());
         totalTokensSold += tokenAmountToReceive;
-        console.log("LOGSOLDOUT", totalTokensSold, maxTotalSellingAmount);
+       
         require(totalTokensSold <= maxTotalSellingAmount, "Sold out");
 
         IERC20(paymentToken_).safeTransferFrom(msg.sender, paymentWallet, amount_);
@@ -239,7 +240,7 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
     /**
     * @dev To claim tokens after claiming starts
     */
-    function claim(bool stake_) external whenNotPaused nonReentrant {
+    function claim(bool stake_) external nonReentrant {
         require(!isBlacklisted[msg.sender], 'This Address is Blacklisted');
         require(claimStarted, 'Claim has not started yet');
         require(!hasClaimed[msg.sender], 'Already claimed');
