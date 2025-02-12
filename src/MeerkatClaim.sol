@@ -29,6 +29,7 @@ contract MeerkatClaim is Ownable, ReentrancyGuard {
         address signer = ECDSA.recover(messageHashSigned, signature_);
         require(signer == signerAddress, "startStake: invalid signature");
 
+        hasClaimed[msg.sender] = true;
         IERC20(meerkatTokenAddress).safeTransfer(msg.sender, amount_);
     }
 
