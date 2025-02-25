@@ -18,12 +18,12 @@ contract DeployPresaleL2Base is Script {
         address aggregatorContract_ = 0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70; // PriceFeed ETH/USD en BASE
         address paymentWallet_ = 0x56E4CF839281f06c6B25a2037C5797C40D35fF2c; 
         uint256 maxTotalSellingAmount_ = 10000000000000 * 1e18;  // @audit CAMBIAR A FINAL
-        uint256 usdLimitPhase0_ = 2 * 1e18; // @audit CAMBIAR A FINAL
-        uint256 usdLimitPhase1_ = 2 * 1e18; // @audit CAMBIAR A FINAL
+        uint256 usdLimitPhase0_ = 10 * 1e18; // @audit CAMBIAR A FINAL
+        uint256 usdLimitPhase1_ = 20 * 1e18; // @audit CAMBIAR A FINAL
 
-        phases_[0] = [20000  * 10**18, 5000, 1737897226]; // @audit CAMBIAR A FINAL
-        phases_[1] = [20000  * 10**18, 15000, 1737997226]; // @audit CAMBIAR A FINAL
-        phases_[2] = [20000  * 10**18, 30000, 1738897226]; // @audit CAMBIAR A FINAL
+        phases_[0] = [20000  * 10**18, 5000, 27020000  ]; // @audit CAMBIAR A FINAL
+        phases_[1] = [20000  * 10**18, 15000, 27120000  ]; // @audit CAMBIAR A FINAL
+        phases_[2] = [20000  * 10**18, 30000, 27229000]; // @audit CAMBIAR A FINAL
         
         PresaleL2 presale = new PresaleL2(usdtAddress_, usdcAddress_, aggregatorContract_, paymentWallet_, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
 

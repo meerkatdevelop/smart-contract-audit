@@ -2,6 +2,8 @@
 
 Test BSC: forge test --via-ir -vvvvv --fork-url https://binance.llamarpc.com --match-test
 
+Deploy: forge script script/BASE/DeployPresaleL2Base.s.sol --rpc-url https://base.llamarpc.com --broadcast -vvvv --via-ir
+forge script script/BASE/DeployPresaleL2Base.s.sol --rpc-url https://binance.llamarpc.com --broadcast -vvvv --via-ir
 
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
