@@ -2,7 +2,7 @@
 
 Test BSC: forge test --via-ir -vvvvv --fork-url https://binance.llamarpc.com --match-test
 
-Deploy: forge script script/BASE/DeployPresaleL2Base.s.sol --rpc-url https://base.llamarpc.com --broadcast -vvvv --via-ir
+Deploy: forge script script/BASE/DeployPresaleL2Base.s.sol --rpc-url https://base.llamarpc.com --broadcast -vvvv --via-ir (https://base-mainnet.public.blastapi.io)
 forge script script/BASE/DeployPresaleL2Base.s.sol --rpc-url https://binance.llamarpc.com --broadcast -vvvv --via-ir
 
 

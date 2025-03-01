@@ -21,8 +21,8 @@ contract DeployPresaleL2Base is Script {
         uint256 usdLimitPhase0_ = 10 * 1e18; // @audit CAMBIAR A FINAL
         uint256 usdLimitPhase1_ = 20 * 1e18; // @audit CAMBIAR A FINAL
 
-        phases_[0] = [20000  * 10**18, 5000, 27020000  ]; // @audit CAMBIAR A FINAL
-        phases_[1] = [20000  * 10**18, 15000, 27120000  ]; // @audit CAMBIAR A FINAL
+        phases_[0] = [20000  * 10**18, 5000, 27020000]; // @audit CAMBIAR A FINAL
+        phases_[1] = [20000  * 10**18, 15000, 27120000]; // @audit CAMBIAR A FINAL
         phases_[2] = [20000  * 10**18, 30000, 27229000]; // @audit CAMBIAR A FINAL
         
         PresaleL2 presale = new PresaleL2(usdtAddress_, usdcAddress_, aggregatorContract_, paymentWallet_, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);

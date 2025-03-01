@@ -8,7 +8,7 @@ import '../lib/openzeppelin-contracts/contracts/utils/Pausable.sol';
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import './interfaces/IAggregator.sol';
-import "forge-std/Test.sol";
+
 contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   using SafeERC20 for IERC20;
 
