@@ -196,5 +196,7 @@ contract MeerkatStaking is Ownable {
     withdrawEnabled = enabled_;
   }
 
-
+  function setHarvestLock(bool harvestlock_) external onlyOwner {
+    harvestLock = harvestlock_;
+  }
 }
