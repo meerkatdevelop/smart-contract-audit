@@ -9,7 +9,6 @@ import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import './interfaces/IAggregator.sol';
 import './interfaces/IStaking.sol';
-import "forge-std/Test.sol";
 
 contract Presale is Ownable, ReentrancyGuard, Pausable {
     using SafeERC20 for IERC20;

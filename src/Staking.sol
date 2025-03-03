@@ -5,7 +5,7 @@ import '../lib/openzeppelin-contracts/contracts/access/Ownable.sol';
 import '../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol';
 import '../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
 import './interfaces/IPresale.sol';
-import "forge-std/Test.sol";
+
 contract Staking is Ownable {
   using SafeERC20 for IERC20;
 

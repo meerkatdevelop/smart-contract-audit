@@ -20,7 +20,7 @@ contract MeerkatClaim is Ownable, ReentrancyGuard {
         meerkatTokenAddress = meerkatTokenAddress_;
     }
 
-    function claim(uint256 amount_, bytes memory signature_) external {
+    function claim(uint256 amount_, bytes memory signature_) external nonReentrant {
         require(!hasClaimed[msg.sender], "Already claimed");
 
         bytes32 messageHash = keccak256(abi.encodePacked(msg.sender, amount_));

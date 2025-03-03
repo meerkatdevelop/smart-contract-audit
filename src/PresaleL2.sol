@@ -8,7 +8,7 @@ import '../lib/openzeppelin-contracts/contracts/utils/Pausable.sol';
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import './interfaces/IAggregator.sol';
-import "forge-std/Test.sol";
+
 contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   using SafeERC20 for IERC20;
 
@@ -72,7 +72,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
    * @param amount_ Number of tokens
    */
   function _checkCurrentPhase(uint256 amount_) private view returns (uint256 phase) {
-    if ((totalTokensSold + amount_ >= phases[currentPhase][0] || (block.timestamp >= phases[currentPhase][2])) && currentPhase < 3) {
+    if ((totalTokensSold + amount_ >= phases[currentPhase][0] || (block.timestamp >= phases[currentPhase][2])) && currentPhase < 2) {
       phase = currentPhase + 1;
     } else {
       phase = currentPhase;
@@ -84,7 +84,7 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
    * @param amount_ Number of tokens
    */
   function _checkAndUpdateCurrentPhase(uint256 amount_) private returns (uint256 phase) {
-    if ((totalTokensSold + amount_ >= phases[currentPhase][0] || (block.timestamp >= phases[currentPhase][2])) && currentPhase < 3) {
+    if ((totalTokensSold + amount_ >= phases[currentPhase][0] || (block.timestamp >= phases[currentPhase][2])) && currentPhase < 2) {
       currentPhase++;
       phase = currentPhase;
       emit NewPhase(phase, phases[phase][0], phases[phase][1], phases[phase][2]);

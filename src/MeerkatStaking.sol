@@ -5,17 +5,13 @@ import '../lib/openzeppelin-contracts/contracts/access/Ownable.sol';
 import '../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol';
 import '../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
 import './interfaces/IPresale.sol';
-import "forge-std/Test.sol";
 
 contract MeerkatStaking is Ownable {
   using SafeERC20 for IERC20;
 
   IERC20 public stakeToken;
-  address public presaleContract;
-  uint256 public tokensStakedByPresale;
   uint256 public tokensStaked;
 
-  address public presale;
   uint256 public rewardTokensPerBlock;
   uint public lockedTime;
   uint public endBlock;
@@ -43,9 +39,8 @@ contract MeerkatStaking is Ownable {
   event Withdraw(address indexed user, uint256 amount);
   event HarvestRewards(address indexed user, uint256 amount);
 
-  constructor(address rewardTokenAddress_, address presale_, uint256 rewardTokensPerBlock_, uint lockTime_, uint endBlock_) Ownable(msg.sender) {
+  constructor(address rewardTokenAddress_, uint256 rewardTokensPerBlock_, uint lockTime_, uint endBlock_) Ownable(msg.sender) {
     stakeToken = IERC20(rewardTokenAddress_);
-    presale = presale_;
     rewardTokensPerBlock = rewardTokensPerBlock_;
     lockedTime = lockTime_;
     endBlock = endBlock_;
@@ -196,5 +191,7 @@ contract MeerkatStaking is Ownable {
     withdrawEnabled = enabled_;
   }
 
-
+  function setHarvestLock(bool harvestlock_) external onlyOwner {
+    harvestLock = harvestlock_;
+  }
 }
