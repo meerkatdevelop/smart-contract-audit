@@ -249,14 +249,15 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
   }
 
   /**
-   * @dev To get the current phase data.
-   */
+  * @dev To get the current phase data.
+  */
   function getCurrentPhaseData() public view returns (PhaseData memory) {
     PhaseData memory currentPhaseData;
-    currentPhaseData.currentPhase = _checkCurrentPhase(0);
-    currentPhaseData.phaseMaxTokens = phases[currentPhase][0];
-    currentPhaseData.phasePrice = phases[currentPhase][1];
-    currentPhaseData.phaseEndTime = phases[currentPhase][2];
+    uint256 currentPhase_ = _checkCurrentPhase(0);
+    currentPhaseData.currentPhase = currentPhase_;
+    currentPhaseData.phaseMaxTokens = phases[currentPhase_][0];
+    currentPhaseData.phasePrice = phases[currentPhase_][1];
+    currentPhaseData.phaseEndTime = phases[currentPhase_][2];
 
     return currentPhaseData;
   }
