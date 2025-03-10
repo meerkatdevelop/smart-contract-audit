@@ -217,6 +217,8 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         totalTokensSold += amount_;
         userTokenBalance[user_] += amount_;
 
+        require(totalTokensSold <= maxTotalSellingAmount, "Sold out");
+
         emit TokensBought(user_, amount_, usdAmount, block.timestamp);
     }
 
