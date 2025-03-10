@@ -15,12 +15,17 @@ contract MeerkatClaim is Ownable, ReentrancyGuard {
     address public meerkatTokenAddress;
     bool public claimEnabled;
 
+    modifier onlyWhenClaimEnabled() {
+      require(claimEnabled, "Claim is not enabled");
+      _;
+    }
+
     constructor(address ownerAddress_, address signerAddress_, address meerkatTokenAddress_) Ownable(ownerAddress_) {
         signerAddress = signerAddress_;
         meerkatTokenAddress = meerkatTokenAddress_;
     }
 
-    function claim(uint256 amount_, bytes memory signature_) external nonReentrant {
+    function claim(uint256 amount_, bytes memory signature_) external nonReentrant onlyWhenClaimEnabled {
         require(!hasClaimed[msg.sender], "Already claimed");
 
         bytes32 messageHash = keccak256(abi.encodePacked(msg.sender, amount_));
@@ -42,5 +47,13 @@ contract MeerkatClaim is Ownable, ReentrancyGuard {
     uint256 contractBalance = IERC20(tokenToWithdraw_).balanceOf(address(this));
 
     IERC20(tokenToWithdraw_).safeTransfer(receiverAddress_, contractBalance);
+  }
+
+  function enableClaim() public onlyOwner { 
+    claimEnabled = true;
+  }
+
+  function unableClaim() public onlyOwner {
+    claimEnabled = false;
   }
 }
