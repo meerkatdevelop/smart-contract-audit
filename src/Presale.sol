@@ -118,7 +118,8 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
     * @dev To get latest ETH price in 10**18 format
     */
     function getLatestPrice() public view returns (uint256) {
-        (, int256 price, , , ) = aggregatorContract.latestRoundData();
+        (, int256 price, , uint256 updatedAt, ) = aggregatorContract.latestRoundData();
+        if (updatedAt < block.timestamp - 2 hours) revert("Chainlink data is too old");
         price = (price * (10 ** 10));
         return uint256(price);
     }
