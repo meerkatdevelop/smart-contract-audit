@@ -50,7 +50,7 @@ contract DeployPresale is Script {
 
         // Deploy Staking
         rewardTokenAddress_ = meerkatTokenAddress;
-        staking = new Staking(rewardTokenAddress_, presaleContract_, rewardTokensPerBlock_, lockTime_, endBlock_);
+        staking = new Staking(rewardTokenAddress_, rewardTokensPerBlock_, lockTime_, endBlock_);
 
         // Deploy Presale
         stakingContract = address(staking);
