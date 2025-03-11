@@ -93,7 +93,7 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
     * @param amount_ Number of tokens
     */
     function _checkCurrentPhase(uint256 amount_) private view returns (uint256 phase) {
-        if ((totalTokensSold + amount_ >= phases[currentPhase][0] || (block.timestamp >= phases[currentPhase][2])) && currentPhase < 3) {
+        if ((totalTokensSold + amount_ >= phases[currentPhase][0] || (block.timestamp >= phases[currentPhase][2])) && currentPhase < 2) {
             phase = currentPhase + 1;
         } else {
             phase = currentPhase;
@@ -105,7 +105,7 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
     * @param amount_ Number of tokens
     */
     function _checkAndUpdateCurrentPhase(uint256 amount_) private returns (uint256 phase) {
-        if ((totalTokensSold + amount_ >= phases[currentPhase][0] || (block.timestamp >= phases[currentPhase][2])) && currentPhase < 3) {
+        if ((totalTokensSold + amount_ >= phases[currentPhase][0] || (block.timestamp >= phases[currentPhase][2])) && currentPhase < 2) {
             currentPhase++;
             phase = currentPhase;
             emit NewPhase(phase, phases[phase][0], phases[phase][1], phases[phase][2]);
@@ -216,6 +216,8 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         usdRaised += usdAmount;
         totalTokensSold += amount_;
         userTokenBalance[user_] += amount_;
+
+        require(totalTokensSold <= maxTotalSellingAmount, "Sold out");
 
         emit TokensBought(user_, amount_, usdAmount, block.timestamp);
     }
@@ -331,10 +333,11 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
     */
     function getCurrentPhaseData() public view returns (PhaseData memory) {
         PhaseData memory currentPhaseData;
-        currentPhaseData.currentPhase = _checkCurrentPhase(0);
-        currentPhaseData.phaseMaxTokens = phases[currentPhase][0];
-        currentPhaseData.phasePrice = phases[currentPhase][1];
-        currentPhaseData.phaseEndTime = phases[currentPhase][2];
+        uint256 currentPhase_ = _checkCurrentPhase(0);
+        currentPhaseData.currentPhase = currentPhase_;
+        currentPhaseData.phaseMaxTokens = phases[currentPhase_][0];
+        currentPhaseData.phasePrice = phases[currentPhase_][1];
+        currentPhaseData.phaseEndTime = phases[currentPhase_][2];
 
         return currentPhaseData;
     }
