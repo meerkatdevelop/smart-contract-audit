@@ -130,7 +130,15 @@ pub mod meerkat_presale_sol {
             MAXIMUM_AGE,
             &get_feed_id_from_hex(FEED_ID)?,
         )?;
-        let price_value = price.price as u64;
+        let price_value = price.price;
+        if price_value == 0 {
+            msg!("ERROR: Solana price is zero.");
+            return Err(error!(MeerkatPresaleErrorsCode::IncorrectSolanaPrice));
+        }
+        if price_value < 0 {
+            msg!("ERROR: Solana price is negative.");
+            return Err(error!(MeerkatPresaleErrorsCode::IncorrectSolanaPrice));
+        }
         let price_conf= price.conf;
         let price_exponent = price.exponent;
         let price_usd = price_value as f64 * 10f64.powi(price_exponent);
@@ -171,7 +179,7 @@ pub mod meerkat_presale_sol {
 
   
 
-    pub fn pause_presale(ctx: Context<PausePresale>) -> Result<()> {
+    pub fn pause_presale(ctx: Context<OwnerTasks>) -> Result<()> {
         msg!("MESSAGE: Pausing the presale...");
         let meerkat_presale = &mut ctx.accounts.meerkat_presale;
 
@@ -191,7 +199,7 @@ pub mod meerkat_presale_sol {
         Ok(())
     }
 
-    pub fn unpause_presale(ctx: Context<UnPausePresale>) -> Result<()> {
+    pub fn unpause_presale(ctx: Context<OwnerTasks>) -> Result<()> {
         msg!("MESSAGE: UnPausing the presale...");
         let meerkat_presale = &mut ctx.accounts.meerkat_presale;
 
@@ -204,7 +212,7 @@ pub mod meerkat_presale_sol {
         // Ensure the presale is not already paused
         if !meerkat_presale.paused {
             msg!("ERROR: Presale is not paused.");
-            return Err(MeerkatPresaleErrorsCode::PresaleAlreadyPaused.into());
+            return Err(MeerkatPresaleErrorsCode::PresaleAlreadyUnPaused.into());
         }
 
         meerkat_presale.paused = false;
@@ -212,7 +220,7 @@ pub mod meerkat_presale_sol {
         Ok(())
     }
 
-    pub fn update_phase(ctx: Context<UpdatePhase>, new_phase: u8) -> Result<()> {
+    pub fn update_phase(ctx: Context<OwnerTasks>, new_phase: u8) -> Result<()> {
         msg!("MESSAGE: Updating phase...");
         let meerkat_presale = &mut ctx.accounts.meerkat_presale;
 
@@ -230,7 +238,7 @@ pub mod meerkat_presale_sol {
         Ok(())
     }
 
-    pub fn update_prices(ctx: Context<UpdatePrices>, new_price: f64,  phase: u8) -> Result<()> {
+    pub fn update_prices(ctx: Context<OwnerTasks>, new_price: f64,  phase: u8) -> Result<()> {
         msg!("MESSAGE: Updating price...");
         let meerkat_presale = &mut ctx.accounts.meerkat_presale;
 
@@ -248,7 +256,7 @@ pub mod meerkat_presale_sol {
         Ok(())
     }
 
-    pub fn update_max_tokens(ctx: Context<UpdateMaxTokens>, new_max_token: u64, phase: u8) -> Result<()> {
+    pub fn update_max_tokens(ctx: Context<OwnerTasks>, new_max_token: u64, phase: u8) -> Result<()> {
         msg!("MESSAGE: Updating max tokens...");
         let meerkat_presale = &mut ctx.accounts.meerkat_presale;
 
@@ -328,8 +336,8 @@ pub struct InitPresale<'info> {
     payer = presale_owner,
     seeds = [b"meerkat_presale"],
     bump,
-    space = 8 + 32 + 4 + (32 * 300)
-)]
+    space = 8 + 122 + 16 // 8 Solana discriminator + 122 bytes for the data + 16 bytes extra if needed
+    )]
     pub meerkat_presale: Account<'info, MeerkatPresale>,
     #[account(mut)]
     pub presale_owner: Signer<'info>,
@@ -356,21 +364,7 @@ pub struct BuyWithSol<'info> {
 }
 
 #[derive(Accounts)]
-pub struct PausePresale<'info> {
-    #[account(
-        mut,
-        seeds = [b"meerkat_presale"],
-        bump,
-        has_one = presale_owner,
-        )]
-    pub meerkat_presale: Account<'info, MeerkatPresale>,
-    #[account(mut)]
-    pub presale_owner: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-pub struct UnPausePresale<'info> {
+pub struct OwnerTasks<'info> {
     #[account(
         mut,
         seeds = [b"meerkat_presale"],
@@ -384,46 +378,6 @@ pub struct UnPausePresale<'info> {
 }
 
 
-#[derive(Accounts)]
-pub struct UpdatePhase<'info> {
-    #[account(
-        mut,
-        seeds = [b"meerkat_presale"],
-        bump,
-        has_one = presale_owner,
-        )]
-    pub meerkat_presale: Account<'info, MeerkatPresale>,
-    #[account(mut)]
-    pub presale_owner: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-pub struct UpdatePrices<'info> {
-    #[account(
-        mut,
-        seeds = [b"meerkat_presale"],
-        bump,
-        has_one = presale_owner,
-        )]
-    pub meerkat_presale: Account<'info, MeerkatPresale>,
-    #[account(mut)]
-    pub presale_owner: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
-#[derive(Accounts)]
-pub struct UpdateMaxTokens<'info> {
-    #[account(
-        mut,
-        seeds = [b"meerkat_presale"],
-        bump,
-        has_one = presale_owner,
-        )]
-    pub meerkat_presale: Account<'info, MeerkatPresale>,
-    #[account(mut)]
-    pub presale_owner: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
 
 //** DATA **//
 
@@ -450,8 +404,12 @@ pub enum MeerkatPresaleErrorsCode {
     IncorrectOwner,
     #[msg("The presale is already paused.")]
     PresaleAlreadyPaused,
+    #[msg("The presale is already unpaused.")]
+    PresaleAlreadyUnPaused,
     #[msg("The account owner is incorrect. The program ID is not the owner.")]
     IncorrectAccountOwner,
     #[msg("The phase is not valid.")]
     PhaseOutOfRange,
+    #[msg("Solana price is not valid.")]
+    IncorrectSolanaPrice,
 }
