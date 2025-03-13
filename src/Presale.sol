@@ -42,7 +42,6 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
     uint256 phaseEndTime;
     }
 
-    event SaleTimeUpdated(bytes32 indexed key, uint256 prevValue, uint256 newValue, uint256 timestamp);
     event TokensBought(address indexed user, uint256 indexed tokensBought, uint256 usdRaised, uint256 timestamp);
     event TokensBoughtAndStaked(address indexed user, uint256 indexed tokensBought, uint256 usdRaised, uint256 timestamp);
     event TokensClaimed(address indexed user, uint256 amount, uint256 timestamp);
