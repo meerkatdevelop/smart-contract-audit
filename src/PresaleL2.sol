@@ -116,7 +116,11 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
       hasBought[msg.sender] = true;
     }
 
-    checkIfEnoughTokens(amount_);
+    uint256 scalatedAmount;
+    if (ERC20(paymentToken_).decimals() == 18) scalatedAmount = amount_;
+    else scalatedAmount = amount_ * 10**(18 - ERC20(paymentToken_).decimals());
+    checkIfEnoughTokens(scalatedAmount);
+    
     uint256 tokenAmountToReceive;
     if (ERC20(paymentToken_).decimals() == 18) tokenAmountToReceive = amount_ * 1e6 / phases[currentPhase][1];
     else tokenAmountToReceive = amount_ * 10**(18 -ERC20(paymentToken_).decimals()) * 1e6 / phases[currentPhase][1];
