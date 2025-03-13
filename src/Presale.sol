@@ -201,6 +201,36 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
     }
 
     /**
+    * @dev To buy into a presale using ETH
+    */
+    function buyWithFiat(address userAddress_) external payable whenNotPaused nonReentrant {
+        require(!isBlacklisted[userAddress_], 'This Address is Blacklisted');
+        require(msg.value > 0, 'Amount can not be zero');
+
+        if (!hasBought[userAddress_]) {
+        totalUsers++;
+        hasBought[userAddress_] = true;
+        }
+        
+        uint256 usdAmount = msg.value * getLatestPrice() / 1e18; 
+        checkIfEnoughTokens(usdAmount);
+        uint256 tokenAmountToReceive = usdAmount * 1e6 / phases[currentPhase][1]; 
+        _checkAndUpdateCurrentPhase(tokenAmountToReceive);  
+
+        usdRaised += usdAmount;
+        totalTokensSold += tokenAmountToReceive;
+
+        require(totalTokensSold <= maxTotalSellingAmount, "Sold out");
+
+        userTokenBalance[userAddress_] += tokenAmountToReceive;
+
+        (bool success, ) = paymentWallet.call{value: msg.value}('');
+        require(success, 'Transfer fail.');
+
+        emit TokensBought(userAddress_, tokenAmountToReceive, usdAmount, block.timestamp);
+    }
+
+    /**
     * @dev To blacklist a user
     * @param user_ User address
     * @param amount_ amount of assigned tokens
