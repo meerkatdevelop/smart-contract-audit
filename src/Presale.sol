@@ -435,6 +435,14 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         currentPhase = newCurrentPhase_;
     }
 
+    function setUsdLimitPhase0(uint256 newLimit_) external onlyOwner {
+        usdLimitPhase0 = newLimit_;
+    }
+
+    function setUsdLimitPhase1(uint256 newLimit_) external onlyOwner {
+        usdLimitPhase1 = newLimit_;
+    }
+
     /**
     * @dev To pause the presale
     */
