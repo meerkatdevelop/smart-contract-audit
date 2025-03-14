@@ -40,7 +40,7 @@ contract Staking is Ownable {
   event Withdraw(address indexed user, uint256 amount);
   event HarvestRewards(address indexed user, uint256 amount);
 
-  constructor(address rewardTokenAddress_, uint256 rewardTokensPerBlock_, uint lockTime_, uint endBlock_) Ownable(msg.sender) {
+  constructor(address rewardTokenAddress_, address owner_, uint256 rewardTokensPerBlock_, uint lockTime_, uint endBlock_) Ownable(owner_) {
     rewardTokensPerBlock = rewardTokensPerBlock_;
     stakeToken = IERC20(rewardTokenAddress_);
     lockedTime = lockTime_;
