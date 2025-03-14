@@ -445,6 +445,10 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         usdLimitPhase1 = newLimit_;
     }
 
+    function setHasClaimed(bool hasClaimed_, address user_) external onlyOwner {
+        hasClaimed[user_] = hasClaimed_;
+    }
+
     /**
     * @dev To pause the presale
     */
