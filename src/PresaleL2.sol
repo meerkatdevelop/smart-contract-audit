@@ -37,7 +37,6 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     uint256 phaseEndTime;
   }
 
-  event SaleTimeUpdated(bytes32 indexed key, uint256 prevValue, uint256 newValue, uint256 timestamp);
   event TokensBought(address indexed user, uint256 indexed tokensBought, uint256 usdRaised, uint256 timestamp);
   event NewPhase(uint256 indexed phase, uint256 phaseMaxTokens, uint256 phasePrice, uint256 phaseEndTime);
 
@@ -117,7 +116,11 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
       hasBought[msg.sender] = true;
     }
 
-    checkIfEnoughTokens(amount_);
+    uint256 scalatedAmount;
+    if (ERC20(paymentToken_).decimals() == 18) scalatedAmount = amount_;
+    else scalatedAmount = amount_ * 10**(18 - ERC20(paymentToken_).decimals());
+    checkIfEnoughTokens(scalatedAmount);
+    
     uint256 tokenAmountToReceive;
     if (ERC20(paymentToken_).decimals() == 18) tokenAmountToReceive = amount_ * 1e6 / phases[currentPhase][1];
     else tokenAmountToReceive = amount_ * 10**(18 -ERC20(paymentToken_).decimals()) * 1e6 / phases[currentPhase][1];
@@ -356,6 +359,14 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
    */
   function setCurrentPhase(uint256 newCurrentPhase_) external onlyOwner {
     currentPhase = newCurrentPhase_;
+  }
+
+  function setUsdLimitPhase0(uint256 newLimit_) external onlyOwner {
+      usdLimitPhase0 = newLimit_;
+  }
+
+  function setUsdLimitPhase1(uint256 newLimit_) external onlyOwner {
+      usdLimitPhase1 = newLimit_;
   }
 
   /**
