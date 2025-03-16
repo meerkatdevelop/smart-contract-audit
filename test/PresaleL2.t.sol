@@ -22,6 +22,7 @@ contract PresaleL2Test is Test {
     address usdcAddress_ = 0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d;
     address aggregatorContract_ = 0x9ef1B8c0E4F7dc8bF5719Ea496883DC6401d5b2e; // ETH/USD in BSC
     address paymentWallet_ = vm.addr(2);
+    address ownerWallet = vm.addr(3);
     uint256[][3] phases_;
     uint256 maxTotalSellingAmount_ = 10000000000000 * 1e18; 
     uint256 usdLimitPhase0_ = 2 * 1e18;
@@ -34,7 +35,7 @@ contract PresaleL2Test is Test {
         phases_[0] = [200_000_000 * 10**18, 5000, 1737897226];
         phases_[1] = [700_000_000 * 10**18, 15000, 1737997226];
         phases_[2] = [700_000_000 * 10**18, 30000, 1738897226];
-        presale = new PresaleL2(usdtAddress_, usdcAddress_, aggregatorContract_, paymentWallet_, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
+        presale = new PresaleL2(usdtAddress_, usdcAddress_, aggregatorContract_, paymentWallet_, ownerWallet, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
         presale.unpausePresale();
         vm.stopPrank();
     }
@@ -255,7 +256,7 @@ contract PresaleL2Test is Test {
         phases_[2] = [700_000_000 * 10**18, 30000, 1738897226];
         uint256 usdLimitPhase0 = 100 * 1e18;
         uint256 usdLimitPhase1 = 100 * 1e18;
-        presale = new PresaleL2(usdtAddress_, usdcAddress_, aggregatorContract_, paymentWallet_, phases_, maxTotalSellingAmount_, usdLimitPhase0, usdLimitPhase1);
+        presale = new PresaleL2(usdtAddress_, usdcAddress_, aggregatorContract_, paymentWallet_, ownerWallet, phases_, maxTotalSellingAmount_, usdLimitPhase0, usdLimitPhase1);
         vm.stopPrank();
 
         vm.startPrank(buyer);

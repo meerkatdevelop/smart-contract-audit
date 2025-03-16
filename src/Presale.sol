@@ -55,11 +55,12 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         address aggregatorContract_,
         address stakingContract_,
         address paymentWallet_,
+        address ownerWallet_,
         uint256[][3] memory phases_,
         uint256 maxTotalSellingAmount_,
         uint256 usdLimitPhase0_,
         uint256 usdLimitPhase1_
-    ) Ownable(paymentWallet_) {
+    ) Ownable(ownerWallet_) {
         tokenAddress = tokenAddress_;
         usdtAddress = usdtAddress_;
         usdcAddress = usdcAddress_;
