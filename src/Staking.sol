@@ -140,7 +140,7 @@ contract Staking is Ownable {
   }
 
   /**
-   * @dev Update pool's accumulatedRewardsPerShare and lastRewardedBlock
+   * @dev Update pool's accumulatedRewardsPerShare and lastRewardedBlock. Endblock defines the last block that generates rewards
    */
   function updatePoolRewards() private {
     if (tokensStaked == 0) {
