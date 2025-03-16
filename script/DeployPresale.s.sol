@@ -30,6 +30,7 @@ contract DeployPresale is Script {
     uint256 rewardTokensPerBlock_ = 304 * 10^18; // @audit CAMBIAR A FINAL
     uint lockTime_ = 604800; // @audit CAMBIAR A FINAL
     uint endBlock_ = block.timestamp + 30 days; // @audit CAMBIAR A FINAL
+    address owner = 0x56E4CF839281f06c6B25a2037C5797C40D35fF2c;
     function run() external returns (Presale) {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
@@ -38,7 +39,7 @@ contract DeployPresale is Script {
         meerkatTokenAddress = address(meerkatToken);
         // Deploy Staking
         rewardTokenAddress_ = meerkatTokenAddress;
-        staking = new Staking(rewardTokenAddress_, rewardTokensPerBlock_, lockTime_, endBlock_);
+        staking = new Staking(rewardTokenAddress_, owner, rewardTokensPerBlock_, lockTime_, endBlock_);
         // Deploy Presale
         stakingContract = address(staking);
         phases_[0] = [200_000_000 * 10**18, 5000, 2737897226]; // @audit CAMBIAR A FINAL

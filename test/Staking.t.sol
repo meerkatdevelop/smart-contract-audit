@@ -51,7 +51,7 @@ contract StakingTest is Test {
 
         // Deploy Staking
         rewardTokenAddress_ = meerkatTokenAddress;
-        staking = new Staking(rewardTokenAddress_, rewardTokensPerBlock_, lockTime_, endBlock_);
+        staking = new Staking(rewardTokenAddress_, deployer, rewardTokensPerBlock_, lockTime_, endBlock_);
         staking.setStakingEnabled(true);
 
         // Deploy Presale
