@@ -190,6 +190,10 @@ contract Staking is Ownable {
     require(success, "Transfer failed");
   }
 
+  function setRewardTokensPerBlock(uint256 rewards_) external onlyOwner {
+    rewardTokensPerBlock = rewards_;
+  }
+
   function setHarvestLock(bool harvestlock_) external onlyOwner {
     harvestLock = harvestlock_;
   }

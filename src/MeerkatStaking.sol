@@ -183,6 +183,10 @@ contract MeerkatStaking is Ownable {
     require(success, "Transfer failed");
   }
 
+  function setRewardTokensPerBlock(uint256 rewards_) external onlyOwner {
+    rewardTokensPerBlock = rewards_
+  }
+
   function setStakingEnabled(bool enabled_) external onlyOwner {
     stakingEnabled = enabled_;
   }
