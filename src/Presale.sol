@@ -455,6 +455,10 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         hasClaimed[user_] = hasClaimed_;
     }
 
+    function setStaking(address stakingAddress_) external onlyOwner {
+        stakingContract = stakingAddress_;
+    }
+
     /**
     * @dev To pause the presale
     */
