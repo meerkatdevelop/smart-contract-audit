@@ -184,7 +184,7 @@ contract MeerkatStaking is Ownable {
   }
 
   function setRewardTokensPerBlock(uint256 rewards_) external onlyOwner {
-    rewardTokensPerBlock = rewards_
+    rewardTokensPerBlock = rewards_;
   }
 
   function setStakingEnabled(bool enabled_) external onlyOwner {
