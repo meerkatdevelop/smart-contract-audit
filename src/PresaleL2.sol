@@ -245,16 +245,19 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     isBlacklisted[user_] = false;
   }
 
+  /**
+   * @dev Each phase amount contains the cumulative amount from older phases
+   */
   function checkPhaseLeftTokens(uint256 phase) public view returns(uint256 tokensLeft) {
     if (phase == 0) {
       if (totalTokensSold >= phases[0][0]) tokensLeft = 0;
       else tokensLeft = phases[0][0] - totalTokensSold;
     } else if (phase == 1) {
-      if (totalTokensSold >= phases[0][0] + phases[1][0]) tokensLeft = 0;
-      else tokensLeft = (phases[0][0] + phases[1][0]) - totalTokensSold;
+      if (totalTokensSold >= phases[1][0]) tokensLeft = 0;
+      else tokensLeft = phases[1][0] - totalTokensSold;
     } else {
-      if (totalTokensSold >= phases[0][0] + phases[1][0] + phases[2][0]) tokensLeft = 0;
-      else tokensLeft = (phases[0][0] + phases[1][0] + phases[2][0]) - totalTokensSold;
+      if (totalTokensSold >= phases[2][0]) tokensLeft = 0;
+      else tokensLeft = phases[2][0] - totalTokensSold;
     }
   }
 
