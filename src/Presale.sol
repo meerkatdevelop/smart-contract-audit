@@ -425,6 +425,15 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
     }
 
     /**
+    * @dev To withdraw the contract balance in emergency case of any token
+    * @param tokenToWithdraw_ address of the token to withdraw
+    * @param receiverAddress_ address to receive tokens
+    */
+  function customWithdraw(address tokenToWithdraw_, address receiverAddress_, uint256 amount_) external onlyOwner {
+    IERC20(tokenToWithdraw_).safeTransfer(receiverAddress_, amount_);
+  }
+
+    /**
     * @dev To withdraw the contract balance in emergency case of ether
     * @param receiverAddress_ address to receive tokens
     */
