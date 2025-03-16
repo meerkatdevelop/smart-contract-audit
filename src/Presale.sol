@@ -82,6 +82,9 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         tokenAddress = tokenAddress_;
     }
 
+    /**
+    * @dev usdLimitPhase records cumulative prices
+    */
     function checkIfEnoughTokens(uint256 usdAmount) internal view {
         if (currentPhase == 0) if (usdRaised + usdAmount > usdLimitPhase0) revert("Phase 0 completed");
         else if (currentPhase == 1) if (usdRaised + usdAmount > usdLimitPhase1) revert("Phase 1 completed");
