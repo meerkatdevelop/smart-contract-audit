@@ -184,19 +184,27 @@ contract MeerkatStaking is Ownable {
   }
 
   function setRewardTokensPerBlock(uint256 rewards_) external onlyOwner {
-    rewardTokensPerBlock = rewards_
+    rewardTokensPerBlock = rewards_;
   }
 
-  function setStakingEnabled(bool enabled_) external onlyOwner {
-    stakingEnabled = enabled_;
+  function setHarvestLock(bool harvestlock_) external onlyOwner {
+    harvestLock = harvestlock_;
+  }
+
+  function setStakeToken(address stakeToken_) external onlyOwner {
+    stakeToken = IERC20(stakeToken_);
+  }
+
+  function setLockedTime(uint time_) external onlyOwner {
+    lockedTime = time_;
   }
 
   function setWithdrawEnabled(bool enabled_) external onlyOwner {
     withdrawEnabled = enabled_;
   }
 
-  function setHarvestLock(bool harvestlock_) external onlyOwner {
-    harvestLock = harvestlock_;
+  function setStakingEnabled(bool enabled_) external onlyOwner {
+    stakingEnabled = enabled_;
   }
 
   function setEndBlock(uint endBlock_) external onlyOwner {
