@@ -133,7 +133,7 @@ contract MeerkatStaking is Ownable {
   }
 
   /**
-   * @dev Update pool's accumulatedRewardsPerShare and lastRewardedBlock
+   * @dev Update pool's accumulatedRewardsPerShare and lastRewardedBlock. Endblock defines the last block that generates rewards
    */
   function updatePoolRewards() private {
     if (tokensStaked == 0) {
@@ -193,5 +193,9 @@ contract MeerkatStaking is Ownable {
 
   function setHarvestLock(bool harvestlock_) external onlyOwner {
     harvestLock = harvestlock_;
+  }
+
+  function setEndBlock(uint endBlock_) external onlyOwner {
+    endBlock = endBlock_;
   }
 }
