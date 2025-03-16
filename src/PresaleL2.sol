@@ -61,6 +61,10 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     _pause();
   }
 
+
+  /**
+   * @dev usdLimitPhase records cumulative prices
+   */
   function checkIfEnoughTokens(uint256 usdAmount) internal view {
     if (currentPhase == 0) if (usdRaised + usdAmount > usdLimitPhase0) revert("Phase 0 completed");
     else if (currentPhase == 1) if (usdRaised + usdAmount > usdLimitPhase1) revert("Phase 1 completed");
