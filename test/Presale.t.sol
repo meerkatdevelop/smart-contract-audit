@@ -27,6 +27,7 @@ contract Presalet is Test {
     address aggregatorContract_ = 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419; // ETH/USD in Ethereum Mainnet
     address stakingContract= vm.addr(3); // @audit define correct contract
     address paymentWallet_ = vm.addr(2);
+    address ownerWallet = vm.addr(4);
     uint256[][3] phases_;
     uint256 maxTotalSellingAmount_ = 10000000000000 * 1e18; 
     uint256 usdLimitPhase0_ = 1000000 * 1e18;
@@ -41,7 +42,7 @@ contract Presalet is Test {
         phases_[2] = [700_000_000 * 10**18, 30000, 1738339200];
         meerkatToken = new MeerkatToken(deployer);
         meerkatTokenAddress = address(meerkatToken);
-        presale = new Presale(meerkatTokenAddress, usdtAddress_, usdcAddress_, aggregatorContract_, stakingContract, paymentWallet_, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
+        presale = new Presale(meerkatTokenAddress, usdtAddress_, usdcAddress_, aggregatorContract_, stakingContract, paymentWallet_, ownerWallet, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
         uint256 balanceOfMeerkat = IERC20(meerkatToken).balanceOf(deployer);
         IERC20(meerkatToken).transfer(address(presale), balanceOfMeerkat);
         vm.stopPrank();
@@ -267,7 +268,7 @@ contract Presalet is Test {
         phases_[2] = [700_000_000 * 10**18, 30000, 1738897226];
         uint256 usdLimitPhase0 = 100 * 1e18;
         uint256 usdLimitPhase1 = 100 * 1e18;
-        presale = new Presale(meerkatTokenAddress, usdtAddress_, usdcAddress_, aggregatorContract_, stakingContract, paymentWallet_, phases_, maxTotalSellingAmount_, usdLimitPhase0, usdLimitPhase1);
+        presale = new Presale(meerkatTokenAddress, usdtAddress_, usdcAddress_, aggregatorContract_, stakingContract, paymentWallet_, ownerWallet, phases_, maxTotalSellingAmount_, usdLimitPhase0, usdLimitPhase1);
         vm.stopPrank();
 
         vm.startPrank(buyer);

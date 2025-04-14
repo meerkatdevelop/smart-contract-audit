@@ -45,11 +45,12 @@ contract PresaleL2 is Ownable, ReentrancyGuard, Pausable {
     address usdcAddress_,
     address aggregatorContract_,
     address paymentWallet_,
+    address ownerWallet_,
     uint256[][3] memory phases_,
     uint256 maxTotalSellingAmount_,
     uint256 usdLimitPhase0_,
     uint256 usdLimitPhase1_
-  ) Ownable(paymentWallet_) {
+  ) Ownable(ownerWallet_) {
     usdtAddress = usdtAddress_;
     usdcAddress = usdcAddress_;
     aggregatorContract = IAggregator(aggregatorContract_);

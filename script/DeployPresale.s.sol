@@ -19,6 +19,7 @@ contract DeployPresale is Script {
     address aggregatorContract_ = 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419; // @audit CAMBIAR A FINAL
     address stakingContract= vm.addr(3); // @audit CAMBIAR A FINAL
     address paymentWallet_ = vm.addr(2); // @audit CAMBIAR A FINAL
+    address ownerWallet = vm.addr(4); // @audit CAMBIAR A FINAL
     uint256[][3] phases_;
     uint256 maxTotalSellingAmount_ = 10000000000000 * 1e18;  // @audit CAMBIAR A FINAL
     uint256 usdLimitPhase0_ = 1000000 * 1e18; // @audit CAMBIAR A FINAL
@@ -45,7 +46,7 @@ contract DeployPresale is Script {
         phases_[0] = [200_000_000 * 10**18, 5000, 2737897226]; // @audit CAMBIAR A FINAL
         phases_[1] = [700_000_000 * 10**18, 15000, 2737997226]; // @audit CAMBIAR A FINAL
         phases_[2] = [700_000_000 * 10**18, 30000, 2738897226]; // @audit CAMBIAR A FINAL
-        presale = new Presale(meerkatTokenAddress, usdtAddress_, usdcAddress_, aggregatorContract_, stakingContract, paymentWallet_, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
+        presale = new Presale(meerkatTokenAddress, usdtAddress_, usdcAddress_, aggregatorContract_, stakingContract, paymentWallet_, ownerWallet, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
         uint256 balanceOfMeerkat = IERC20(meerkatToken).balanceOf(deployer); // @audit CAMBIAR A FINAL
         IERC20(meerkatToken).transfer(address(presale), balanceOfMeerkat); // @audit CAMBIAR A FINAL
         presaleContract_ = address(presale);

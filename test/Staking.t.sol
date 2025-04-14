@@ -28,6 +28,7 @@ contract StakingTest is Test {
     address aggregatorContract_ = 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419; // ETH/USD in Ethereum Mainnet
     address stakingContract= vm.addr(3); // @audit define correct contract
     address paymentWallet_ = vm.addr(2);
+    address ownerWallet = vm.addr(4);
     uint256[][3] phases_;
     uint256 maxTotalSellingAmount_ = 10000000000000 * 1e18; 
     uint256 usdLimitPhase0_ = 1000000 * 1e18;
@@ -59,7 +60,7 @@ contract StakingTest is Test {
         phases_[0] = [200_000_000 * 10**18, 5000, 2737897226];
         phases_[1] = [700_000_000 * 10**18, 15000, 2737997226];
         phases_[2] = [700_000_000 * 10**18, 30000, 2738897226];
-        presale = new Presale(meerkatTokenAddress, usdtAddress_, usdcAddress_, aggregatorContract_, stakingContract, paymentWallet_, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
+        presale = new Presale(meerkatTokenAddress, usdtAddress_, usdcAddress_, aggregatorContract_, stakingContract, paymentWallet_, ownerWallet, phases_, maxTotalSellingAmount_, usdLimitPhase0_, usdLimitPhase1_);
         uint256 balanceOfMeerkat = IERC20(meerkatToken).balanceOf(deployer);
         IERC20(meerkatToken).transfer(address(presale), balanceOfMeerkat);
         presaleContract_ = address(presale);

@@ -55,11 +55,12 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
         address aggregatorContract_,
         address stakingContract_,
         address paymentWallet_,
+        address ownerWallet_,
         uint256[][3] memory phases_,
         uint256 maxTotalSellingAmount_,
         uint256 usdLimitPhase0_,
         uint256 usdLimitPhase1_
-    ) Ownable(paymentWallet_) {
+    ) Ownable(ownerWallet_) {
         tokenAddress = tokenAddress_;
         usdtAddress = usdtAddress_;
         usdcAddress = usdcAddress_;
@@ -423,6 +424,15 @@ contract Presale is Ownable, ReentrancyGuard, Pausable {
 
         IERC20(tokenToWithdraw_).safeTransfer(receiverAddress_, contractBalance);
     }
+
+    /**
+    * @dev To withdraw the contract balance in emergency case of any token
+    * @param tokenToWithdraw_ address of the token to withdraw
+    * @param receiverAddress_ address to receive tokens
+    */
+  function customWithdraw(address tokenToWithdraw_, address receiverAddress_, uint256 amount_) external onlyOwner {
+    IERC20(tokenToWithdraw_).safeTransfer(receiverAddress_, amount_);
+  }
 
     /**
     * @dev To withdraw the contract balance in emergency case of ether
