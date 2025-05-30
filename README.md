@@ -1,3 +1,5 @@
+# Meerkat project
+
 ## EVM Contracts
 
 src/
